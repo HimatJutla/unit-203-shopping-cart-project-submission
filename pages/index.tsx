@@ -87,8 +87,16 @@ export default function Home() {
 
   // STATE CHANGE METHODS
   const removeLineItem = (lineItemId: number): void => {
-    const updatedShoppingCartItems = shoppingCartPickListLineItems.filter((shoppingCartPickListLineItem: ShoppingCartPickListLineItem) => {
-      return shoppingCartPickListLineItem.id !== lineItemId;
+    const updatedShoppingCartItems: Array<ShoppingCartPickListLineItem> = [];
+    shoppingCartPickListLineItems.forEach((shoppingCartPickListLineItem: ShoppingCartPickListLineItem) => {
+      if (shoppingCartPickListLineItem.id === lineItemId && shoppingCartPickListLineItem.quantity > 1) {
+        updatedShoppingCartItems.push({...shoppingCartPickListLineItem, quantity: shoppingCartPickListLineItem.quantity - 1});
+        return;
+      }
+      if (shoppingCartPickListLineItem.id !== lineItemId) {
+        updatedShoppingCartItems.push(shoppingCartPickListLineItem);
+        return;
+      }
     });
     setShoppingCartPickListLineItemsHandler(updatedShoppingCartItems);
   }
