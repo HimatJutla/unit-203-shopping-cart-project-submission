@@ -46,13 +46,6 @@ const initialShoppingCartPickListItems: Array<ShoppingCartPickListLineItem> = [
   },
 ];
 
-const initialShoppingCartPickListTotals: ShoppingCartPickListItemsTotals = {
-  subtotal: 2094.97,
-  hst: 272.3461,
-  total: 2382.3161,
-  estimatedDelivery: "Nov 24, 2021"
-};
-
 const ShoppingCartPickListStyling = styled.div`
   margin: 0 auto;
   width: 50%;
@@ -69,8 +62,25 @@ const ShoppingCartPickListStyling = styled.div`
 
 export default function Home() {
 
+  const calculateFees = (shoppingCartPickListLineItems: Array<ShoppingCartPickListLineItem>): ShoppingCartPickListItemsTotals => {
+    let subtotal = 0;
+    const shipping = 15;
+    shoppingCartPickListLineItems.forEach((shoppingCartPickListLineItem: ShoppingCartPickListLineItem) => {
+      subtotal = subtotal + (shoppingCartPickListLineItem.price * shoppingCartPickListLineItem.quantity);
+    });
+    const hst = subtotal * 0.13;
+    const total = subtotal + hst + shipping;
+    return {
+      subtotal: parseInt(subtotal.toFixed(2), 10),
+      hst: parseInt(hst.toFixed(2), 10),
+      total: parseInt(total.toFixed(2), 10),
+      shipping: shipping,
+    }
+
+  }
+
   const [shoppingCartPickListLineItems, setShoppingCartPickListLineItems] = useState(initialShoppingCartPickListItems);
-  const [shoppingCartPickListLineItemsTotals, setShoppingCartPickListLineItemsTotals] = useState(initialShoppingCartPickListTotals);
+  const [shoppingCartPickListLineItemsTotals, setShoppingCartPickListLineItemsTotals] = useState(calculateFees(shoppingCartPickListLineItems));
 
   // STATE CHANGE METHODS
   const removeLineItem = (lineItemId: number): void => {
@@ -92,6 +102,11 @@ export default function Home() {
     // HANDLERS
     const setShoppingCartPickListLineItemsHandler = (updatedShoppingCartItems: Array<ShoppingCartPickListLineItem>): void => {
       setShoppingCartPickListLineItems(updatedShoppingCartItems);
+      setShoppingCartPickListLineItemsTotalsHandler(updatedShoppingCartItems);
+    }
+
+    const setShoppingCartPickListLineItemsTotalsHandler = (updatedShoppingCartItems: Array<ShoppingCartPickListLineItem>): void => {
+      setShoppingCartPickListLineItemsTotals(calculateFees(updatedShoppingCartItems));
     }
 
   return (

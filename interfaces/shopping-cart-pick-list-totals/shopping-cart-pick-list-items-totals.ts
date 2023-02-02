@@ -3,4 +3,5 @@ export interface ShoppingCartPickListItemsTotals {
     hst: number
     total: number;
     estimatedDelivery?: string;
+    shipping?: number;
 }
