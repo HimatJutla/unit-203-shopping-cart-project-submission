@@ -1,5 +1,6 @@
 
 
+import { PostalCodeDeliveryDate } from "@/interfaces/postal-codes/postal-code-delivery-date";
 import { ShoppingCartPickListLineItem } from "@/interfaces/shopping-cart-pick-list-items/shopping-cart-pick-list-item";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -37,9 +38,77 @@ const initialShoppingCartPickListItems: Array<ShoppingCartPickListLineItem> = [
       swatchTitle: "White",
     },
   ];
-  
-  const handler = (req: NextApiRequest, res: NextApiResponse<any>) => {
-    return res.status(200).json(initialShoppingCartPickListItems);
+
+    // Static Postal Code Data
+ const postalCodeDeliveryDates: Array<PostalCodeDeliveryDate> = [
+    {
+      postal: "V",
+      ids: [2],
+      estimatedDeliveryDate: "Nov 24, 2021",
+    },
+    {
+      postal: "V",
+      ids: [1, 3],
+      estimatedDeliveryDate: "Nov 19, 2021",
+    },
+    {
+      postal: "M",
+      ids: [2, 3],
+      estimatedDeliveryDate: "Nov 22, 2021",
+    },
+    {
+      postal: "M",
+      ids: [1],
+      estimatedDeliveryDate: "Dec 19, 2021",
+    },
+    {
+      postal: "K",
+      ids: [1, 2, 3],
+      estimatedDeliveryDate: "Dec 24, 2021",
+    },
+  ];
+
+  const assignEstimatedDeliveryToShoppingCartPickListItems = (firstLetterInPostalCodeSubmitted: string, initialShoppingCartPickListItem: ShoppingCartPickListLineItem) => {
+    const postalCodesMatchingSubmittedPostalCodeFirstLetter = postalCodeDeliveryDates.filter((postalCodeDeliveryDate: PostalCodeDeliveryDate) => {
+      return postalCodeDeliveryDate.postal === firstLetterInPostalCodeSubmitted;
+    });
+    const estimatedDeliveryDate = postalCodesMatchingSubmittedPostalCodeFirstLetter.find((postalCodeMatch: PostalCodeDeliveryDate) => {
+      return postalCodeMatch.ids.includes(initialShoppingCartPickListItem.id)
+    })?.estimatedDeliveryDate;
+    return estimatedDeliveryDate;
   };
+
+    const formatShoppingCartPickListItemsUpdatedWithEstimatedDelivery = (firstLetterInPostalCodeSubmitted: string, deliveryDatePickListItemsExist: boolean, initialShoppingCartPickListItems: Array<ShoppingCartPickListLineItem>): Array<ShoppingCartPickListLineItem> => {
+        const formattedShoppingCartPickListItemsWithDeliver = initialShoppingCartPickListItems.map((initialShoppingCartPickListItem: ShoppingCartPickListLineItem) => {
+            return {
+            ...initialShoppingCartPickListItem,
+            estimatedDeliveryDate: deliveryDatePickListItemsExist ? assignEstimatedDeliveryToShoppingCartPickListItems(firstLetterInPostalCodeSubmitted, initialShoppingCartPickListItem) : 'Cannot estimate shipping time for this postal code'
+        }
+    });
+    return formattedShoppingCartPickListItemsWithDeliver;
+  }
+    const test = (postalCodeSubmitted: string | string[]): Array<ShoppingCartPickListLineItem> => {
+        const firstLetterInPostalCodeSubmitted = Array.from(postalCodeSubmitted)[0].toUpperCase();
+        const deliveryDatePickListItemsExist = postalCodeDeliveryDates.some(
+            (postalCodeDeliveryDate: PostalCodeDeliveryDate) => postalCodeDeliveryDate.postal === firstLetterInPostalCodeSubmitted
+        );
+        const shoppingCartPickListItemsUpdatedWithEstimatedDelivery = formatShoppingCartPickListItemsUpdatedWithEstimatedDelivery(
+            firstLetterInPostalCodeSubmitted,
+            deliveryDatePickListItemsExist,
+            initialShoppingCartPickListItems
+        );
+        return shoppingCartPickListItemsUpdatedWithEstimatedDelivery;
+    }
+  
+    const handler = (req: NextApiRequest, res: NextApiResponse<any>) => {
+        const { postalCodeSubmitted } = req?.query;
+        console.log(postalCodeSubmitted);
+        if (postalCodeSubmitted === undefined) {
+        return res.status(200).json(initialShoppingCartPickListItems);
+    }
+        console.log(postalCodeSubmitted);
+        const finalizedShoppingCartPickListItemsWithEstimatedDeliveryDates = test(postalCodeSubmitted);
+        return res.status(200).json(finalizedShoppingCartPickListItemsWithEstimatedDeliveryDates);
+    };
   
   export default handler;

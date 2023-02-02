@@ -128,7 +128,7 @@ const ShoppingCartPickList = ({
                     <div className="flexed-end-action-column">
                         <div
                             className="mini-text">
-                            Estimated Delivery Date: Dec 2 - Dec 15
+                            Estimated Delivery Date: {shoppingCartPickListLineItem?.estimatedDeliveryDate ? shoppingCartPickListLineItem?.estimatedDeliveryDate : 'Add postal code to determine'}
                         </div>
                         <div className="buttons-container">
                             <button

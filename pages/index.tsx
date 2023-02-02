@@ -102,7 +102,13 @@ export default function Home() {
   }
 
   const handleOnPostalCodeSubmitted = (postalCodeSubmitted: string): void => {
-    console.log('parent', postalCodeSubmitted);
+    setAreShoppingCartPickListLineItemsLoading(true);
+    fetch(`${server}/api/shopping-cart-pick-list-items?postalCodeSubmitted=${postalCodeSubmitted}`)
+      .then((res) => res.json())
+      .then((shoppingCartPickListLineItems: Array<ShoppingCartPickListLineItem>) => {
+        setShoppingCartPickListLineItemsHandler(shoppingCartPickListLineItems);
+        setAreShoppingCartPickListLineItemsLoading(false);
+      });
   }
 
 

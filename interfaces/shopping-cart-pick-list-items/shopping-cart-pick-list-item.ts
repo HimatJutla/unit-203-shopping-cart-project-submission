@@ -6,4 +6,5 @@ export interface ShoppingCartPickListLineItem {
     image: string;
     swatchColor: string;
     swatchTitle: string;
+    estimatedDeliveryDate?: string;
 }
