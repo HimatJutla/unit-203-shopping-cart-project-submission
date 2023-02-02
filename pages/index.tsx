@@ -3,8 +3,9 @@ import { ShoppingCartPickListTotals } from '@/components/shopping-cart-pick-list
 import { ShoppingCartPickListLineItem } from '@/interfaces/shopping-cart-pick-list-items/shopping-cart-pick-list-item';
 import { ShoppingCartPickListItemsTotals } from '@/interfaces/shopping-cart-pick-list-totals/shopping-cart-pick-list-items-totals';
 import Head from 'next/head'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { server } from "../server-config";
 
 //Styling variables
 const BLUE = "#172162"; //"rgb(23, 33, 98)";
@@ -81,6 +82,7 @@ export default function Home() {
 
   const [shoppingCartPickListLineItems, setShoppingCartPickListLineItems] = useState(initialShoppingCartPickListItems);
   const [shoppingCartPickListLineItemsTotals, setShoppingCartPickListLineItemsTotals] = useState(calculateFees(shoppingCartPickListLineItems));
+  const [areShoppingCartPickListLineItemsLoading, setAreShoppingCartPickListLineItemsLoading] = useState(true);
 
   // STATE CHANGE METHODS
   const removeLineItem = (lineItemId: number): void => {
@@ -108,6 +110,24 @@ export default function Home() {
     const setShoppingCartPickListLineItemsTotalsHandler = (updatedShoppingCartItems: Array<ShoppingCartPickListLineItem>): void => {
       setShoppingCartPickListLineItemsTotals(calculateFees(updatedShoppingCartItems));
     }
+
+    // FETCH INITIAL DATA
+    useEffect(() => {
+      fetch(`${server}/api/shopping-cart-pick-list-items`)
+        .then((res) => res.json())
+        .then((shoppingCartPickListLineItems: Array<ShoppingCartPickListLineItem>) => {
+          setShoppingCartPickListLineItemsHandler(shoppingCartPickListLineItems);
+          setAreShoppingCartPickListLineItemsLoading(false);
+        });
+    }, []);
+
+  if (areShoppingCartPickListLineItemsLoading) {
+    return (
+      <>
+        Shopping Cart Pick List Items Are Loading ...
+      </>
+    )
+  }
 
   return (
     <>
