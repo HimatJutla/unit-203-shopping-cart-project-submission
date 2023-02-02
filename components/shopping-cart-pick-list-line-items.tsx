@@ -12,7 +12,7 @@ const ShoppingCartPickListContainerStyling = styled.ul`
 `;
 
 const ShoppingCartPickListItemStyling = styled.li`
-  .item-container {
+.item-container {
     display: flex;
     align-items: start;
     justify-content: space-between;
@@ -52,6 +52,10 @@ const ShoppingCartPickListItemStyling = styled.li`
             display: flex;
             align-items: center;
             margin-top: 6%;
+            .add-item-btn {
+                padding: 3%;
+                cursor: pointer;
+            }
             .remove-item {
                 margin-left: 10%;
                 text-decoration-line: underline;
@@ -69,16 +73,21 @@ const ShoppingCartPickListItemStyling = styled.li`
 const ShoppingCartPickList = ({
     shoppingCartPickListLineItems,
     onRemoveShoppingCartLineItem,
+    onAddShoppingCartLineItem
    }: ShoppingCartPickListItemsProps): any => {
-
-    const handleRemoveItemClick = (event: any) => {
-        onRemoveShoppingCartLineItem(parseInt(event.target.value, 10));
-    }
 
     if (!shoppingCartPickListLineItems?.length) {
         return (
             <div>There are no items in your cart</div>
         );
+    }
+
+    const handleRemoveItemClick = (event: any) => {
+        onRemoveShoppingCartLineItem(parseInt(event.target.value, 10));
+    }
+
+    const handleAddItemClick = (event: any) => {
+        onAddShoppingCartLineItem(JSON.parse(event.target.value));
     }
 
     return (   
@@ -122,6 +131,12 @@ const ShoppingCartPickList = ({
                             Estimated Delivery Date: Dec 2 - Dec 15
                         </div>
                         <div className="buttons-container">
+                            <button
+                                className="add-item-btn"
+                                value={JSON.stringify(shoppingCartPickListLineItem)}
+                                onClick={handleAddItemClick}>
+                                Add
+                            </button>
                             <button
                                 className="mini-text remove-item"
                                 value={shoppingCartPickListLineItem.id}

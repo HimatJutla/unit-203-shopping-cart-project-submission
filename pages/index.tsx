@@ -77,9 +77,17 @@ export default function Home() {
     const updatedShoppingCartItems = shoppingCartPickListLineItems.filter((shoppingCartPickListLineItem: ShoppingCartPickListLineItem) => {
       return shoppingCartPickListLineItem.id !== lineItemId;
     });
-    console.log('updated',updatedShoppingCartItems);
     setShoppingCartPickListLineItemsHandler(updatedShoppingCartItems);
   }
+
+  const addLineItem = (lineItem: ShoppingCartPickListLineItem): void => {
+    const {id} = lineItem;
+    const updatedShoppingCartItems = shoppingCartPickListLineItems.map((shoppingCartPickListLineItem: ShoppingCartPickListLineItem) => {
+      return shoppingCartPickListLineItem.id !== id ? shoppingCartPickListLineItem : {...shoppingCartPickListLineItem, quantity: shoppingCartPickListLineItem.quantity + 1};
+    });
+    setShoppingCartPickListLineItemsHandler(updatedShoppingCartItems);
+  }
+
 
     // HANDLERS
     const setShoppingCartPickListLineItemsHandler = (updatedShoppingCartItems: Array<ShoppingCartPickListLineItem>): void => {
@@ -98,7 +106,7 @@ export default function Home() {
       <header>
             Your Cart
         </header>
-        <ShoppingCartPickList shoppingCartPickListLineItems={shoppingCartPickListLineItems} onRemoveShoppingCartLineItem={removeLineItem}/>
+        <ShoppingCartPickList shoppingCartPickListLineItems={shoppingCartPickListLineItems} onRemoveShoppingCartLineItem={removeLineItem} onAddShoppingCartLineItem={addLineItem}/>
         <ShoppingCartPickListTotals shoppingCartPickListTotals={shoppingCartPickListLineItemsTotals}/>
       </ShoppingCartPickListStyling>
     </>
