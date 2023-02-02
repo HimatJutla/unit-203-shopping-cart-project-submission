@@ -72,6 +72,20 @@ export default function Home() {
   const [shoppingCartPickListLineItems, setShoppingCartPickListLineItems] = useState(initialShoppingCartPickListItems);
   const [shoppingCartPickListLineItemsTotals, setShoppingCartPickListLineItemsTotals] = useState(initialShoppingCartPickListTotals);
 
+  // STATE CHANGE METHODS
+  const removeLineItem = (lineItemId: number): void => {
+    const updatedShoppingCartItems = shoppingCartPickListLineItems.filter((shoppingCartPickListLineItem: ShoppingCartPickListLineItem) => {
+      return shoppingCartPickListLineItem.id !== lineItemId;
+    });
+    console.log('updated',updatedShoppingCartItems);
+    setShoppingCartPickListLineItemsHandler(updatedShoppingCartItems);
+  }
+
+    // HANDLERS
+    const setShoppingCartPickListLineItemsHandler = (updatedShoppingCartItems: Array<ShoppingCartPickListLineItem>): void => {
+      setShoppingCartPickListLineItems(updatedShoppingCartItems);
+    }
+
   return (
     <>
       <Head>
@@ -84,7 +98,7 @@ export default function Home() {
       <header>
             Your Cart
         </header>
-        <ShoppingCartPickList shoppingCartPickListLineItems={shoppingCartPickListLineItems}/>
+        <ShoppingCartPickList shoppingCartPickListLineItems={shoppingCartPickListLineItems} onRemoveShoppingCartLineItem={removeLineItem}/>
         <ShoppingCartPickListTotals shoppingCartPickListTotals={shoppingCartPickListLineItemsTotals}/>
       </ShoppingCartPickListStyling>
     </>

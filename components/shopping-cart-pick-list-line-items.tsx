@@ -68,7 +68,12 @@ const ShoppingCartPickListItemStyling = styled.li`
 
 const ShoppingCartPickList = ({
     shoppingCartPickListLineItems,
+    onRemoveShoppingCartLineItem,
    }: ShoppingCartPickListItemsProps): any => {
+
+    const handleRemoveItemClick = (event: any) => {
+        onRemoveShoppingCartLineItem(parseInt(event.target.value, 10));
+    }
 
     if (!shoppingCartPickListLineItems?.length) {
         return (
@@ -118,7 +123,9 @@ const ShoppingCartPickList = ({
                         </div>
                         <div className="buttons-container">
                             <button
-                                className="mini-text remove-item">
+                                className="mini-text remove-item"
+                                value={shoppingCartPickListLineItem.id}
+                                onClick={handleRemoveItemClick}>
                                 Remove
                             </button>
                         </div>
