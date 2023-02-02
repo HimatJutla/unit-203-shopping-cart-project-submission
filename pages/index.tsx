@@ -70,6 +70,7 @@ const ShoppingCartPickListStyling = styled.div`
 export default function Home() {
 
   const [shoppingCartPickListLineItems, setShoppingCartPickListLineItems] = useState(initialShoppingCartPickListItems);
+  const [shoppingCartPickListLineItemsTotals, setShoppingCartPickListLineItemsTotals] = useState(initialShoppingCartPickListTotals);
 
   return (
     <>
@@ -84,7 +85,7 @@ export default function Home() {
             Your Cart
         </header>
         <ShoppingCartPickList shoppingCartPickListLineItems={shoppingCartPickListLineItems}/>
-        <ShoppingCartPickListTotals shoppingCartPickListTotals={initialShoppingCartPickListTotals}/>
+        <ShoppingCartPickListTotals shoppingCartPickListTotals={shoppingCartPickListLineItemsTotals}/>
       </ShoppingCartPickListStyling>
     </>
   )

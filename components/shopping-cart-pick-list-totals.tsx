@@ -38,10 +38,10 @@ const ShoppingCartPickListTotals = ({
             </ShoppingCartPickListTotalsContainerStyling>
             <ShoppingCartPickListTotalsContainerStyling>
                 <div>
-                    $Taxes (estimated):
+                    Taxes (estimated):
                 </div>
                 <div>
-                    {shoppingCartPickListTotals.hst}
+                    ${shoppingCartPickListTotals.hst}
                 </div>
             </ShoppingCartPickListTotalsContainerStyling>
             <ShoppingCartPickListTotalsContainerStyling>
