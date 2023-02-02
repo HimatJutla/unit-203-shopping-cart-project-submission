@@ -87,7 +87,7 @@ const initialShoppingCartPickListItems: Array<ShoppingCartPickListLineItem> = [
     });
     return formattedShoppingCartPickListItemsWithDeliver;
   }
-    const test = (postalCodeSubmitted: string | string[]): Array<ShoppingCartPickListLineItem> => {
+    const finalizeShoppingCartPickListItemsWithEstimatedDeliveryDates = (postalCodeSubmitted: string | string[]): Array<ShoppingCartPickListLineItem> => {
         const firstLetterInPostalCodeSubmitted = Array.from(postalCodeSubmitted)[0].toUpperCase();
         const deliveryDatePickListItemsExist = postalCodeDeliveryDates.some(
             (postalCodeDeliveryDate: PostalCodeDeliveryDate) => postalCodeDeliveryDate.postal === firstLetterInPostalCodeSubmitted
@@ -105,7 +105,7 @@ const initialShoppingCartPickListItems: Array<ShoppingCartPickListLineItem> = [
         if (postalCodeSubmitted === undefined) {
         return res.status(200).json(initialShoppingCartPickListItems);
     }
-        const finalizedShoppingCartPickListItemsWithEstimatedDeliveryDates = test(postalCodeSubmitted);
+        const finalizedShoppingCartPickListItemsWithEstimatedDeliveryDates = finalizeShoppingCartPickListItemsWithEstimatedDeliveryDates(postalCodeSubmitted);
         return res.status(200).json(finalizedShoppingCartPickListItemsWithEstimatedDeliveryDates);
     };
   
