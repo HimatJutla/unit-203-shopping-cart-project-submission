@@ -1,5 +1,7 @@
 import { ShoppingCartPickList } from '@/components/shopping-cart-pick-list-line-items';
+import { ShoppingCartPickListTotals } from '@/components/shopping-cart-pick-list-totals';
 import { ShoppingCartPickListLineItem } from '@/interfaces/shopping-cart-pick-list-items/shopping-cart-pick-list-item';
+import { ShoppingCartPickListItemsTotals } from '@/interfaces/shopping-cart-pick-list-totals/shopping-cart-pick-list-items-totals';
 import Head from 'next/head'
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -44,10 +46,12 @@ const initialShoppingCartPickListItems: Array<ShoppingCartPickListLineItem> = [
   },
 ];
 
-const SUBTOTAL = 2094.97;
-const HST = 272.3461;
-const TOTAL = 2382.3161;
-const ESTIMATED_DELIVERY = "Nov 24, 2021";
+const initialShoppingCartPickListTotals: ShoppingCartPickListItemsTotals = {
+  subtotal: 2094.97,
+  hst: 272.3461,
+  total: 2382.3161,
+  estimatedDelivery: "Nov 24, 2021"
+};
 
 const ShoppingCartPickListStyling = styled.div`
   margin: 0 auto;
@@ -66,6 +70,7 @@ const ShoppingCartPickListStyling = styled.div`
 export default function Home() {
 
   const [shoppingCartPickListLineItems, setShoppingCartPickListLineItems] = useState(initialShoppingCartPickListItems);
+
   return (
     <>
       <Head>
@@ -79,6 +84,7 @@ export default function Home() {
             Your Cart
         </header>
         <ShoppingCartPickList shoppingCartPickListLineItems={shoppingCartPickListLineItems}/>
+        <ShoppingCartPickListTotals shoppingCartPickListTotals={initialShoppingCartPickListTotals}/>
       </ShoppingCartPickListStyling>
     </>
   )
