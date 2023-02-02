@@ -102,11 +102,9 @@ const initialShoppingCartPickListItems: Array<ShoppingCartPickListLineItem> = [
   
     const handler = (req: NextApiRequest, res: NextApiResponse<any>) => {
         const { postalCodeSubmitted } = req?.query;
-        console.log(postalCodeSubmitted);
         if (postalCodeSubmitted === undefined) {
         return res.status(200).json(initialShoppingCartPickListItems);
     }
-        console.log(postalCodeSubmitted);
         const finalizedShoppingCartPickListItemsWithEstimatedDeliveryDates = test(postalCodeSubmitted);
         return res.status(200).json(finalizedShoppingCartPickListItemsWithEstimatedDeliveryDates);
     };
