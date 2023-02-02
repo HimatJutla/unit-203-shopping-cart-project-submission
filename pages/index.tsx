@@ -1,4 +1,8 @@
+import { ShoppingCartPickList } from '@/components/shopping-cart-pick-list-line-items';
+import { ShoppingCartPickListLineItem } from '@/interfaces/shopping-cart-pick-list-items/shopping-cart-pick-list-item';
 import Head from 'next/head'
+import { useState } from 'react';
+import styled from 'styled-components';
 
 //Styling variables
 const BLUE = "#172162"; //"rgb(23, 33, 98)";
@@ -6,7 +10,7 @@ const LIGHT_GREY = "#6e7484";
 const BLACK = "#000000";
 
 //First part given
-const lineItems = [
+const initialShoppingCartPickListItems: Array<ShoppingCartPickListLineItem> = [
   {
     id: 1,
     title: "Grey Sofa",
@@ -40,15 +44,42 @@ const lineItems = [
   },
 ];
 
+const SUBTOTAL = 2094.97;
+const HST = 272.3461;
+const TOTAL = 2382.3161;
+const ESTIMATED_DELIVERY = "Nov 24, 2021";
+
+const ShoppingCartPickListStyling = styled.div`
+  margin: 0 auto;
+  width: 50%;
+  min-width: 50%;
+  padding: 5%;
+  height: 100vh;
+  header {
+    font-size: 1.875rem;
+    margin-bottom: 6%;
+  }
+  }
+`;
+
+
 export default function Home() {
+
+  const [shoppingCartPickListLineItems, setShoppingCartPickListLineItems] = useState(initialShoppingCartPickListItems);
   return (
     <>
       <Head>
-        <title>Create Next App</title>
+        <title>Unit 203 Cart Picklist</title>
         <meta name="description" content="Unit 203 shopping cart" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <ShoppingCartPickListStyling>
+      <header>
+            Your Cart
+        </header>
+        <ShoppingCartPickList shoppingCartPickListLineItems={shoppingCartPickListLineItems}/>
+      </ShoppingCartPickListStyling>
     </>
   )
 }
