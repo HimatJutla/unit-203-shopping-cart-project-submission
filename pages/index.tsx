@@ -1,3 +1,4 @@
+import { ShoppingCartEstimatedDeliveryFeesForm } from '@/components/shopping-cart-estimated-delivery-fees-form';
 import { ShoppingCartPickList } from '@/components/shopping-cart-pick-list-line-items';
 import { ShoppingCartPickListTotals } from '@/components/shopping-cart-pick-list-totals';
 import { ShoppingCartPickListLineItem } from '@/interfaces/shopping-cart-pick-list-items/shopping-cart-pick-list-item';
@@ -100,6 +101,10 @@ export default function Home() {
     setShoppingCartPickListLineItemsHandler(updatedShoppingCartItems);
   }
 
+  const handleOnPostalCodeSubmitted = (postalCodeSubmitted: string): void => {
+    console.log('parent', postalCodeSubmitted);
+  }
+
 
     // HANDLERS
     const setShoppingCartPickListLineItemsHandler = (updatedShoppingCartItems: Array<ShoppingCartPickListLineItem>): void => {
@@ -143,6 +148,9 @@ export default function Home() {
         </header>
         <ShoppingCartPickList shoppingCartPickListLineItems={shoppingCartPickListLineItems} onRemoveShoppingCartLineItem={removeLineItem} onAddShoppingCartLineItem={addLineItem}/>
         <ShoppingCartPickListTotals shoppingCartPickListTotals={shoppingCartPickListLineItemsTotals}/>
+        {shoppingCartPickListLineItems.length ?
+          <ShoppingCartEstimatedDeliveryFeesForm onPostalCodeSubmitted={handleOnPostalCodeSubmitted}/> : <div>Please add some items to your cart</div>
+        }
       </ShoppingCartPickListStyling>
     </>
   )
